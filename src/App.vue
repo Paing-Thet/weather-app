@@ -67,7 +67,7 @@ export default {
   font-family: Arial, sans-serif;
 }
 
-.main-title {
+h1.main-title {
   color: #fff;
 }
 p {
