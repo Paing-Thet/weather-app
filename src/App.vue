@@ -4,24 +4,27 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      city: "Bangkok",
+      city: "",
       weather: null,
-      loading: false,
-      error: null,
+      // loading: false,
+      // error: null,
     };
   },
   methods: {
     async getWeatherData() {
-      const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${apiKey}`;
+      // const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+      // const url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${apiKey}`;
 
-      this.loading = true;
-      this.error = null;
-      this.weather = null;
+      // this.loading = true;
+      // this.error = null;
+      // this.weather = null;
 
       try {
-        const response = await axios.get(url);
-        this.weather = response.data;
+        const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${apiKey}`);
+        // const response = await axios.get(url);
+        const data = await response.json();
+        this.weather = data;
         this.loading = false; 
       } catch (err) {
         if(err.response && err.response.status === 404){
@@ -45,14 +48,14 @@ export default {
 
     <div v-if="loading" class="spinner"></div>
 
-    <!-- <p v-if="loading">Loading weather data...</p> -->
-    <p v-if="!loading && weather">
-      Current weather in {{ weather.name }} : {{ weather.main.temp }}°C
-    </p>
-    <p v-if="!loading && weather">Description : {{ weather.weather[0].description }}</p>
-    <p v-if="!loading && weather">Humidity : {{ weather.main.humidity }}</p>
-    <p v-if="!loading && weather">Wind Speed : {{ weather.wind.speed }}</p>
-    <p v-if="error">{{ error }}</p>
+    <div v-if="!loading && weather">
+      <h2>{{ weather.name }}</h2>
+      <p>Temperature : {{ weather.main.temp }}°C</p>
+      <p>Condition : {{ weather.weather[0].description }}</p>
+      <p>Humidity : {{ weather.main.humidity }} %</p>
+      <p>Wind Speed : {{ weather.wind.speed }} m/s</p>
+    </div>
+
   </div>
 </template>
 
