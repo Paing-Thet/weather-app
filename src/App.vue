@@ -1,14 +1,10 @@
 <script>
 import axios from 'axios';
 import WeatherDisplay from './components/WeatherDisplay.vue';
-import VueSimpleSpinner from 'vue-simple-spinner';
-
-
 
 export default {
   components: {
     WeatherDisplay,
-    VueSimpleSpinner,
   },
   data() {
     return {
