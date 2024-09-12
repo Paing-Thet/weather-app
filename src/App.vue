@@ -16,6 +16,11 @@ export default {
   },
   methods: {
     async getWeatherData() {
+      if (this.city.trim() === "") {
+        this.errorMessage = "City name cannot be empty!";
+        this.weather = null;
+        return;
+      }
       this.isLoading = true;
       try {
         const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
@@ -37,6 +42,11 @@ export default {
         this.isLoading = false;
       }
     },
+    clearData() {
+    this.city = "";
+    this.weather = null;
+    this.errorMessage = null;
+  }
   },
 };
 </script>
@@ -47,14 +57,16 @@ export default {
 
     <input v-model="city" placeholder="Enter City Name" />
     <button @click="getWeatherData">Get Weather</button>
+    <button @click="clearData" :disabled="isLoading || !city">Clear</button>
 
     <div v-if="errorMessage" class="error-message">
       <p>{{ errorMessage }}</p>
     </div>
 
     <!-- <vue-simple-spinner v-if="isLoading" size="40" color="#42b883" /> -->
+    <div v-if="isLoading" class="spinner"></div>
 
-    <WeatherDisplay v-else-if="weather && weather.main" :weather="weather" />
+    <WeatherDisplay v-if="weather" :weather="weather" />
 
   </div>
 </template>
@@ -73,24 +85,31 @@ export default {
 h1.main-title {
   color: #fff;
 }
-p {
-  font-size: 1.2em;
-  color: #bbb;
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 .spinner {
-  border: 4px solid #9e9e9e;
-  border-left-color: #fff;
+  border: 4px solid #ccc;
+  border-left-color: #42b883;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   animation: spin 1s linear infinite;
+  margin-top: 20px;
 }
 
 .error-message {
-  color: red;
+  color: #ffdb4e;
+  font-size: 1.2em;
+  text-shadow: 0px 0px 15px #b48505, 5px 5px 15px #b48505, -5px -5px 15px #b48505;
+  padding: 10px;
+  border-radius: 5px;
   font-weight: bold;
+  margin-top: 10px;
 }
+
 
 @keyframes spin {
   0% {
