@@ -1,11 +1,11 @@
 <script>
     export default {
-        props: ['weather'],
+        props: ['weather', 'condition'],
     }
 </script>
 
 <template>
-    <div class="weather-info">
+    <div :class="['weather-info', condition]">
         <img :src="`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`" alt="Weather Icon" class="weather-icon" />
         <h2>{{ weather.name }}</h2>
         <p>Temperature : {{ Math.round(weather.main.temp) }}°C</p>
@@ -16,6 +16,30 @@
 </template>
 
 <style scoped>
+
+.sunny {
+  background-color: #ffeb3b;
+}
+
+.rainy {
+  background-color: #2196f3;
+}
+
+.clouds {
+  background-color: #90a4ae;
+}
+
+.snow {
+  background-color: #e1f5fe;
+}
+
+.clear {
+  background-color: #4caf50;
+}
+
+.default-bg {
+  background-color: #f0f0f0;
+}
     .weather-icon {
         width: 100px;
         height: 100px;

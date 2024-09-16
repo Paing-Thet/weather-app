@@ -12,21 +12,37 @@ export default {
       weather: null,
       errorMessage: null,
       isLoading: false,
+      backgroundClass : "",
     };
   },
+  mounted() {
+    this.$refs.cityName.focus();
+    const lastCity = localStorage.getItem("lastCity");
+    if(lastCity){
+      this.city = lastCity;
+      this.getWeatherData();
+    }
+  },
   methods: {
-    async getWeatherData() {
-      if (this.city.trim() === "") {
+    validateInput(){
+      const cityName = this.city.trim();
+      if(!this.city){
         this.errorMessage = "City name cannot be empty!";
-        this.weather = null;
-        return;
+        return false;
+      } else if (!isNaN(cityName)){
+        this.errorMessage = "Hey don't try to type Numbers in City Name!";
+        return false;
       }
+      return true;
+    },
+    async getWeatherData() {
+      if (!this.validateInput()) return;
       this.isLoading = true;
       try {
         const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=${apiKey}`);
         if(!response.ok){
-          throw new Error(`${this.city} City is not found`);
+          throw new Error(`${this.city} City is not found or May be a forgotten Ancient City`);
         }
 
         const data = await response.json();
@@ -35,8 +51,13 @@ export default {
 
       } catch (error) {
 
+        if (error.message.includes('City is not found')) {
+          this.errorMessage = error.message;
+        } else {
+          this.errorMessage = "Network issue or API unavailable. Please try again later.";
+        }
+
         this.weather = null;
-        this.errorMessage = error.message;
 
       } finally {
         this.isLoading = false;
@@ -55,18 +76,20 @@ export default {
   <div id="app" class="text-center">
     <h1 class="main-title">Weather App</h1>
 
-    <input v-model="city" placeholder="Enter City Name" />
-    <button @click="getWeatherData">Get Weather</button>
+    <input v-model="city" placeholder="Enter City Name" @keyup.enter="getWeatherData" ref="cityName" />
+    <button @click="getWeatherData" :disabled="isLoading || !city.trim()" >Get Weather</button>
     <button @click="clearData" :disabled="isLoading || !city">Clear</button>
 
     <div v-if="errorMessage" class="error-message">
       <p>{{ errorMessage }}</p>
     </div>
 
-    <!-- <vue-simple-spinner v-if="isLoading" size="40" color="#42b883" /> -->
-    <div v-if="isLoading" class="spinner"></div>
+    <div class="weatherContainer">
 
-    <WeatherDisplay v-if="weather" :weather="weather" />
+      <WeatherDisplay v-if="weather" :weather="weather" :condition="weather.weather[0].main.toLowerCase()" />
+      <div v-if="isLoading" class="spinner"></div>
+
+    </div>
 
   </div>
 </template>
@@ -91,13 +114,16 @@ button:disabled {
 }
 
 .spinner {
-  border: 4px solid #ccc;
-  border-left-color: #42b883;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 4px solid #9e9e9e;
+  border-left-color: #fff;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   animation: spin 1s linear infinite;
-  margin-top: 20px;
 }
 
 .error-message {
@@ -109,6 +135,27 @@ button:disabled {
   font-weight: bold;
   margin-top: 10px;
 }
+
+.sunny {
+  background: #fff917;
+}
+
+.rainy {
+  background: #73ade6;
+}
+
+.clouds {
+  background: #acc2d9;
+}
+
+.clear {
+  background: #ffffff;
+}
+
+.default-bg {
+  background: #333;
+}
+
 
 
 @keyframes spin {
