@@ -1,10 +1,14 @@
 <script>
 import axios from 'axios';
 import WeatherDisplay from './components/WeatherDisplay.vue';
+import Mainmenu from './components/Mainmenu.vue';
+import Mainfooter from './components/Mainfooter.vue';
 
 export default {
   components: {
     WeatherDisplay,
+    Mainmenu,
+    Mainfooter,
   },
   data() {
     return {
@@ -79,7 +83,7 @@ export default {
 
 <template>
   <div id="app" class="text-center">
-    <h1 class="main-title">Weather App</h1>
+    <Mainmenu />
 
     <input v-model="city" placeholder="Enter City Name" @keyup.enter="getWeatherData" ref="cityName" />
     <button @click="getWeatherData" :disabled="isLoading || !city.trim()" >Get Weather</button>
@@ -106,14 +110,13 @@ export default {
       <div v-if="isLoading" class="spinner"></div>
 
     </div>
-
+    <Mainfooter />
   </div>
 </template>
 
 <style scoped>
 #app {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   height: 100vh;
@@ -158,28 +161,6 @@ button:disabled {
   font-weight: bold;
   margin-top: 10px;
 }
-
-.sunny {
-  background: #fff917;
-}
-
-.rainy {
-  background: #73ade6;
-}
-
-.clouds {
-  background: #acc2d9;
-}
-
-.clear {
-  background: #ffffff;
-}
-
-.default-bg {
-  background: #333;
-}
-
-
 
 @keyframes spin {
   0% {
