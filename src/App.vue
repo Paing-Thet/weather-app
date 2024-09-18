@@ -13,6 +13,7 @@ export default {
       errorMessage: null,
       isLoading: false,
       backgroundClass : "",
+      unit: "C",
     };
   },
   mounted() {
@@ -37,6 +38,10 @@ export default {
     },
     async getWeatherData() {
       if (!this.validateInput()) return;
+
+      if (this.weather) {
+        localStorage.setItem('lastCity', this.city);
+      }
       this.isLoading = true;
       try {
         const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
@@ -80,13 +85,24 @@ export default {
     <button @click="getWeatherData" :disabled="isLoading || !city.trim()" >Get Weather</button>
     <button @click="clearData" :disabled="isLoading || !city">Clear</button>
 
+    <div v-if="weather">
+      <label>
+        <input type="radio" v-model="unit" value="C"> Celsius
+      </label>
+      <label>
+        <input type="radio" v-model="unit" value="F"> Fahrenheit
+      </label>
+    </div>
+
     <div v-if="errorMessage" class="error-message">
       <p>{{ errorMessage }}</p>
     </div>
 
     <div class="weatherContainer">
 
-      <WeatherDisplay v-if="weather" :weather="weather" :condition="weather.weather[0].main.toLowerCase()" />
+      <transition name="fade">
+        <WeatherDisplay v-if="weather" :weather="weather" :condition="weather.weather[0].main.toLowerCase()" :unit="unit" />
+      </transition>
       <div v-if="isLoading" class="spinner"></div>
 
     </div>
@@ -111,6 +127,13 @@ h1.main-title {
 
 button:disabled {
   cursor: not-allowed;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 
 .spinner {
