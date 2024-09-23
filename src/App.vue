@@ -3,12 +3,14 @@ import axios from 'axios';
 import WeatherDisplay from './components/WeatherDisplay.vue';
 import Mainmenu from './components/Mainmenu.vue';
 import Mainfooter from './components/Mainfooter.vue';
+import CityInput from './components/cityInput.vue';
 
 export default {
   components: {
     WeatherDisplay,
     Mainmenu,
     Mainfooter,
+    CityInput
   },
   data() {
     return {
@@ -17,11 +19,10 @@ export default {
       errorMessage: null,
       isLoading: false,
       backgroundClass : "",
-      unit: "C",
+      
     };
   },
   mounted() {
-    this.$refs.cityName.focus();
     const lastCity = localStorage.getItem("lastCity");
     if(lastCity){
       this.city = lastCity;
@@ -85,31 +86,17 @@ export default {
   <div id="app" class="text-center">
     <Mainmenu />
 
-    <input v-model="city" placeholder="Enter City Name" @keyup.enter="getWeatherData" ref="cityName" />
-    <button @click="getWeatherData" :disabled="isLoading || !city.trim()" >Get Weather</button>
-    <button @click="clearData" :disabled="isLoading || !city">Clear</button>
-
-    <div v-if="weather">
-      <label>
-        <input type="radio" v-model="unit" value="C"> Celsius
-      </label>
-      <label>
-        <input type="radio" v-model="unit" value="F"> Fahrenheit
-      </label>
-    </div>
+    <CityInput v-model:cityInput="city" :isLoading="isLoading" @getWeather="getWeatherData" @clearData="clearData" />
 
     <div v-if="errorMessage" class="error-message">
       <p>{{ errorMessage }}</p>
     </div>
 
-    <div class="weatherContainer">
+    <div v-if="!weather" class="spacer"></div>
 
-      <transition name="fade">
-        <WeatherDisplay v-if="weather" :weather="weather" :condition="weather.weather[0].main.toLowerCase()" :unit="unit" />
-      </transition>
-      <div v-if="isLoading" class="spinner"></div>
-
-    </div>
+    <WeatherDisplay v-if="weather" :weather="weather" :condition="weather.weather[0].main.toLowerCase() " />
+    <div v-if="isLoading" class="spinner"></div>
+    
     <Mainfooter />
   </div>
 </template>
@@ -122,14 +109,6 @@ export default {
   height: 100vh;
   margin: 0;
   font-family: Arial, sans-serif;
-}
-
-h1.main-title {
-  color: #fff;
-}
-
-button:disabled {
-  cursor: not-allowed;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -160,6 +139,10 @@ button:disabled {
   border-radius: 5px;
   font-weight: bold;
   margin-top: 10px;
+}
+.spacer {
+  display: block;
+  height: 800px;
 }
 
 @keyframes spin {

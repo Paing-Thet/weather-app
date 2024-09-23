@@ -1,12 +1,24 @@
 <script>
     export default {
-        props: ['weather', 'condition', 'unit'],
+        data() {
+          return {
+            unit: 'C',
+          };
+        },
+
+        props: ['weather', 'condition'],
 
         computed: {
           displayTemperature() {
             return this.unit === "C"
             ? Math.round(this.weather.main.temp)
             : Math.round((this.weather.main.temp * 9/5) + 32);
+          },
+          
+          displayFeelsLike() {
+            return this.unit === "C"
+            ? Math.floor(this.weather.main.feels_like)
+            : Math.floor((this.weather.main.feels_like * 9/5) + 32);
           }
         },
 
@@ -17,21 +29,54 @@
           }
         }
     }
-    // console.log(this.unit);
 </script>
 
 <template>
-    <div :class="['weather-info', condition]">
-        <img :src="`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`" alt="Weather Icon" class="weather-icon" />
-        <h2>{{ weather.name }}</h2>
-        <p>Temperature : {{ displayTemperature }}°{{ unit }}</p>
-        <p>Condition : {{ weather.weather[0].description }}</p>
-        <p>Humidity : {{ weather.main.humidity }} %</p>
-        <p>Wind Speed : {{ weather.wind.speed }} m/s</p>
-        <p>Pressure : {{ weather.main.pressure }} hPa</p>
-        <p>Visibility : {{ weather.visibility / 1000 }} km</p>
-        <p>Sunrise : {{ formatTime(weather.sys.sunrise) }}</p>
-        <p>Sunset : {{ formatTime(weather.sys.sunset) }}</p>
+    <div class="unitContainer">
+      <label>
+        <input type="radio" v-model="unit" value="C"> Celsius
+      </label>
+      <label>
+        <input type="radio" v-model="unit" value="F"> Fahrenheit
+      </label>
+    </div>
+    <div class="simpleContainer">
+      <h2>Simple</h2>
+      <div :class="['weather-info', condition]">
+        <div class="simpleMain">
+          <h3>{{ weather.name }}</h3>
+          <img :src="`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`" alt="Weather Icon" class="weather-icon" />
+          <h2><font-awesome-icon icon="temperature-half" /> {{ displayTemperature }}°{{ unit }}</h2>
+          <p><strong>{{ weather.weather[0].description }}</strong></p>
+        </div>
+        <div class="simpleData">
+          <p> <font-awesome-icon icon="wind" /> : {{ weather.wind.speed }} m/s</p>
+          <p> <font-awesome-icon icon="sun" /> : {{ formatTime(weather.sys.sunrise) }}</p>
+          <p> <font-awesome-icon icon="cloud-sun" /> : {{ formatTime(weather.sys.sunset) }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="detailsContainer">
+      <h2>Details</h2>
+      <div :class="['weather-info', condition]">
+        <div class="detailsMain">
+          <h3>{{ weather.name }}</h3>
+          <img :src="`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`" alt="Weather Icon" class="weather-icon" />
+          <h2> <font-awesome-icon icon="temperature-half" /> {{ displayTemperature }}°{{ unit }}</h2>
+          <p>Feels like : {{ displayFeelsLike }}°{{ unit }}</p>
+          <p>{{ weather.weather[0].description }}</p>
+        </div>
+
+        <div class="detailsData">
+          <p> <font-awesome-icon icon="tint" /> {{ weather.main.humidity }} %</p>
+          <p> <font-awesome-icon icon="wind" /> {{ weather.wind.speed }} m/s</p>
+          <p> <font-awesome-icon icon="tachometer-alt" /> {{ weather.main.pressure }} hPa</p>
+          <p> <font-awesome-icon icon="eye" /> {{ weather.visibility / 1000 }} km</p>
+          <p> <font-awesome-icon icon="sun" /> {{ formatTime(weather.sys.sunrise) }}</p>
+          <p> <font-awesome-icon icon="cloud-sun" /> {{ formatTime(weather.sys.sunset) }}</p>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -60,17 +105,61 @@
 .default-bg {
   background-color: #f0f0f0;
 }
-    .weather-icon {
+
+.unitContainer {
+  margin-top: 50px;
+}
+
+.simpleContainer {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+}
+.simpleContainer  .weather-icon {
+    width: 100px;
+    height: 100px;
+    background: #999;
+}
+.simpleContainer  .weather-info {
+    margin: 50px 0px;
+    max-width: 1280px;
+    width: 400px;
+    background-color: #d9e2e8;
+    padding: 20px;
+    border-radius: 25px;
+    color: #333;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center
+}
+.simpleMain p{
+  text-transform: capitalize;
+}
+.simpleData {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.detailsContainer {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+}
+  .detailsContainer  .weather-icon {
         width: 100px;
         height: 100px;
         background: #999;
     }
-    .weather-info {
+  .detailsContainer  .weather-info {
         margin: 50px 0px;
         max-width: 1280px;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
+        width: 600px;
+        background-color: #d9e2e8;
+        padding: 30px;
+        border-radius: 15px;
         color: #333;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
         display: flex;
@@ -81,11 +170,37 @@
         justify-content: space-evenly;
         gap: 50px;
     }
+.detailsMain p {
+  text-transform: capitalize;
+}
+.detailsData {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.detailsData p {
+  margin: 8px 0px ;
+}
 
     
 
     @media only screen and (max-width: 600px) {
-      .weather-info {
+      .simpleContainer .weather-info {
+        width: 300px;
+        gap: 20px;
+      }
+      .simpleData {
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: flex-start;
+        align-self: center;
+        align-content: flex-start;
+      }
+      .simpleData p {
+        margin: 0px;
+      }
+      .detailsContainer  .weather-info {
         background-color: #fff;
         padding: 20px;
         border-radius: 8px;

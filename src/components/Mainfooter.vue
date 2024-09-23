@@ -16,12 +16,10 @@ export default {
 
 <style scoped>
 .main-footer {
+  margin-top: 50px;
   background: #91b8ff;
   color: #fff;
   text-align: center;
-  padding: 10px;
-  position: fixed;
-  bottom: 0;
   width: 100%;
   font-size: 0.9em;
 }
