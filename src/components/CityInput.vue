@@ -20,8 +20,8 @@ export default {
 <template>
     <div class="city-input">
       <input :value="cityInput" @input="updateCityInput" placeholder="Enter City Name" @keyup.enter="getWeather" ref="cityName" />
-      <button @click="getWeather" :disabled="isLoading || !cityInput.trim()">Get Weather</button>
-      <button @click="clearData" :disabled="isLoading || !cityInput">Clear</button>
+      <button @click="getWeather" :disabled="isLoading || !cityInput.trim()" class="getBtn">Get Weather</button>
+      <button @click="clearData" :disabled="isLoading || !cityInput" class="resetBtn">Clear</button>
     </div>
   </template>
 
@@ -32,10 +32,31 @@ export default {
         justify-content: center;
         margin-bottom: 20px;
     }
+    .getBtn {
+      background-color: aquamarine;
+      color: black;
+    }
+    .resetBtn {
+      background-color: tomato;
+    }
 
     button:disabled {
         cursor: not-allowed;
     }
 
+    @media only screen and (max-width: 600px) {
+      .city-input {
+        width: 400px;
+        flex-direction: column;
+        align-items: center;
+      }
+      .city-input input {
+        width: 250px;
+        height: 30px;
+      }
+      .city-input button {
+        display: inline-block;
+      }
+    }
 
 </style>
