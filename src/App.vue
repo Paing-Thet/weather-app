@@ -20,7 +20,7 @@ export default {
       errorMessage: null,
       isLoading: false,
       backgroundClass : "",
-      
+      cityInput: '',
     };
   },
   mounted() {

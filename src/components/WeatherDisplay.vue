@@ -13,13 +13,6 @@
             const date = new Date(unixTime * 1000);
             return date.toLocaleTimeString();
           },
-          handleUnitChange(unit) {
-            if (unit === 'pro' && !this.isUserLoggedIn) {
-            alert('Pro feature is only for registered users. Please log in to access.');
-          } else {
-            this.unit = unit;  // Allow change if logged in or switching to free
-          }
-        },
       }
     }
 </script>
@@ -31,7 +24,7 @@
       </label>
       
       <label>
-        <input type="radio" v-model="unit" value="pro" @click="handleUnitChange('pro')"> Pro
+        <input type="radio" v-model="unit" value="pro"> Pro
       </label>
     </div>
 
@@ -55,7 +48,13 @@
 
     <div v-if="unit=='pro'" class="detailsContainer">
       <h2>Pro</h2>
-      <div :class="['weather-info', condition]">
+
+      <div v-if="!this.isUserLoggedIn" class="lockAccess">
+        <p><font-awesome-icon icon="triangle-exclamation" style="color: goldenrod; font-size: 72px;" /></p>
+        <p><strong>Pro feature is only for registered users. Please log in to access.</strong></p>
+      </div>
+
+      <div v-if="this.isUserLoggedIn" :class="['weather-info', condition]">
         <div class="detailsMain">
           <h3>{{ weather.name }}</h3>
           <img :src="`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`" alt="Weather Icon" class="weather-icon" />
@@ -64,7 +63,7 @@
           <p><strong>{{ weather.weather[0].description }}</strong></p>
         </div>
 
-        <div class="detailsData">
+        <div v-if="this.isUserLoggedIn" class="detailsData">
           <p> <font-awesome-icon icon="tint" /> {{ weather.main.humidity }} %</p>
           <p> <font-awesome-icon icon="wind" /> {{ weather.wind.speed }} m/s</p>
           <p> <font-awesome-icon icon="tachometer-alt" /> {{ weather.main.pressure }} hPa</p>
@@ -148,7 +147,25 @@
         width: 100px;
         height: 100px;
         background: #999;
-    }
+  }
+  .lockAccess {
+    margin: 50px 0px;
+    max-width: 1280px;
+    width: 600px;
+    height: 350px;
+    background-color: #d9e2e8;
+    padding: 30px;
+    border-radius: 15px;
+    color: #333;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .lockAccess p {
+    font-size: 32px;
+  }
   .detailsContainer  .weather-info {
         margin: 50px 0px;
         max-width: 1280px;
