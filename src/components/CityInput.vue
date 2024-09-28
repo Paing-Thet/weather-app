@@ -32,9 +32,15 @@ export default {
         justify-content: center;
         margin-bottom: 20px;
     }
+    .city-input input {
+      padding-left: 10px;
+      border-radius: 15px;
+      background: #1f2034;
+      color: #fff;
+    }
     .getBtn {
-      background-color: aquamarine;
-      color: black;
+      background-color: #5ca5b4;
+      color: #fff;
     }
     .resetBtn {
       background-color: tomato;

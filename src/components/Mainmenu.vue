@@ -72,7 +72,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    background: #91b8ff;
+    background: #1f2034;
     max-width: 100%;
     width: -webkit-fill-available;
     padding: 0px 150px;

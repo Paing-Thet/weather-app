@@ -17,7 +17,7 @@ export default {
 <style scoped>
 .main-footer {
   margin-top: 50px;
-  background: #91b8ff;
+  background: #1f2034;
   color: #fff;
   text-align: center;
   width: 100%;

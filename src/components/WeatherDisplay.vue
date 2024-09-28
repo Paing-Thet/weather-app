@@ -39,9 +39,9 @@
           <p><strong>{{ weather.weather[0].description }}</strong></p>
         </div>
         <div class="simpleData">
-          <p> <font-awesome-icon icon="wind" /> : {{ weather.wind.speed }} m/s</p>
-          <p> <font-awesome-icon icon="sun" /> : {{ formatTime(weather.sys.sunrise) }}</p>
-          <p> <font-awesome-icon icon="cloud-sun" /> : {{ formatTime(weather.sys.sunset) }}</p>
+          <div class="dataContainer"><p> <font-awesome-icon icon="wind" style="font-size: 28px;" /> </p><p> {{ weather.wind.speed }} m/s</p></div>
+          <div class="dataContainer"><p> <font-awesome-icon icon="sun" style="font-size: 28px;" /> </p><p> {{ formatTime(weather.sys.sunrise) }}</p></div>
+          <div class="dataContainer"><p> <font-awesome-icon icon="cloud-sun" style="font-size: 28px;" /> </p><p> {{ formatTime(weather.sys.sunset) }}</p></div>
         </div>
       </div>
     </div>
@@ -64,12 +64,18 @@
         </div>
 
         <div v-if="this.isUserLoggedIn" class="detailsData">
-          <p> <font-awesome-icon icon="tint" /> {{ weather.main.humidity }} %</p>
-          <p> <font-awesome-icon icon="wind" /> {{ weather.wind.speed }} m/s</p>
-          <p> <font-awesome-icon icon="tachometer-alt" /> {{ weather.main.pressure }} hPa</p>
-          <p> <font-awesome-icon icon="eye" /> {{ weather.visibility / 1000 }} km</p>
-          <p> <font-awesome-icon icon="sun" /> {{ formatTime(weather.sys.sunrise) }}</p>
-          <p> <font-awesome-icon icon="cloud-sun" /> {{ formatTime(weather.sys.sunset) }}</p>
+          <div class="dataRow">
+            <div class="dataContainer"><p> <font-awesome-icon icon="tint" style="font-size: 24px;" /> </p><p> {{ weather.main.humidity }} %</p></div>
+            <div class="dataContainer"><p> <font-awesome-icon icon="wind" style="font-size: 24px;" /> </p><p> {{ weather.wind.speed }} m/s</p></div>
+          </div>
+          <div class="dataRow">
+            <div class="dataContainer"><p> <font-awesome-icon icon="tachometer-alt" style="font-size: 24px;" /> </p><p> {{ weather.main.pressure }} hPa</p></div>
+            <div class="dataContainer"><p> <font-awesome-icon icon="eye" style="font-size: 24px;" /> </p><p> {{ weather.visibility / 1000 }} km</p></div>
+          </div>
+          <div class="dataRow">
+            <div class="dataContainer"><p> <font-awesome-icon icon="sun" style="font-size: 24px;" /> </p><p> {{ formatTime(weather.sys.sunrise) }}</p></div>
+            <div class="dataContainer"><p> <font-awesome-icon icon="cloud-sun" style="font-size: 24px;" /> </p><p> {{ formatTime(weather.sys.sunset) }}</p></div>
+          </div>
         </div>
       </div>
     </div>
@@ -118,16 +124,20 @@
 .simpleContainer  .weather-info {
     margin: 50px 0px;
     max-width: 1280px;
-    width: 400px;
-    background-color: #d9e2e8;
+    width: 450px;
+    background-color: #1f2034;
     padding: 20px;
+    padding-bottom: 50px;
     border-radius: 25px;
-    color: #333;
+    color: #fff;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center
+}
+.weather-info img{
+  border-radius: 250px;
 }
 .simpleMain p{
   text-transform: capitalize;
@@ -135,6 +145,33 @@
 .simpleData {
   display: flex;
   flex-direction: row;
+  gap: 20px;
+}
+.dataContainer {
+  margin-top: 20px;
+  width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px #00000060;
+  background-color: #25253d;
+  color: #fff;
+  transition: 0.3s ease;
+}
+.dataContainer:hover {
+  box-shadow: 0px 4px 6px #00a3d5, 0px 4px 24px #00a3d5;
+  text-shadow: 0px 0px 6px #00a3d5, 0px 0px 12px #00a3d5, 0px 0px 24px #00a3d5;
+  transition: 0.3s ease;
+  scale: 1.05;
+}
+
+.dataRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   gap: 20px;
 }
 
@@ -153,10 +190,10 @@
     max-width: 1280px;
     width: 600px;
     height: 350px;
-    background-color: #d9e2e8;
+    background-color: #1f2034;
     padding: 30px;
     border-radius: 15px;
-    color: #333;
+    color: #fff;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
@@ -170,10 +207,11 @@
         margin: 50px 0px;
         max-width: 1280px;
         width: 600px;
-        background-color: #d9e2e8;
+        background-color: #1f2034;
         padding: 30px;
+        padding-bottom: 50px;
         border-radius: 15px;
-        color: #333;
+        color: #fff;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
         display: flex;
         flex-wrap: wrap;
@@ -200,6 +238,7 @@
 
     @media only screen and (max-width: 600px) {
       .simpleContainer .weather-info {
+        flex-direction: column;
         width: 300px;
         gap: 20px;
       }
@@ -220,7 +259,6 @@
       }
       .detailsData {
         display: block;
-        column-count: 2;
       }
       .detailsData p {
         display: block;
