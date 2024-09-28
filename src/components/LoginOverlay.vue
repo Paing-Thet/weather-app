@@ -1,24 +1,24 @@
 <template>
-    <div class="overlay" @click="checkClose">
-      <div class="formContainer" ref="formContainer" @click.stop>
-        <button class="close-btn" @click="closeOverlay">X</button>
+  <div class="overlay" @click="checkClose">
+    <div class="formContainer" ref="formContainer" @click.stop>
+      <button class="close-btn" @click="closeOverlay">X</button>
+
+      <form @submit.prevent="login">
+        <div class="labelContainer">
+          <label>Email:</label>
+          <input v-model="email" type="email" required />
+        </div>
   
-        <form @submit.prevent="login">
-          <div>
-            <label>Email:</label>
-            <input v-model="email" type="email" required />
-          </div>
+        <div class="labelContainer">
+          <label>Password:</label>
+          <input v-model="password" type="password" required />
+        </div>
   
-          <div>
-            <label>Password:</label>
-            <input v-model="password" type="password" required />
-          </div>
-  
-          <button type="submit">Login</button>
-        </form>
-      </div>
+        <button type="submit">Login</button>
+      </form>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import { login } from '../services/authService';
@@ -89,7 +89,7 @@
     gap: 20px;
     padding-top: 30px;
   }
-  .formContainer form div {
+  .labelContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -1,8 +1,8 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from '../firebase/firebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 // Sign up function
 export const signUp = async (name, email, password) => {
-  const auth = getAuth();
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   const user = userCredential.user;
   // Update the user's profile with their name
@@ -12,7 +12,6 @@ export const signUp = async (name, email, password) => {
 
 // Login function
 export const login = async (email, password) => {
-  const auth = getAuth();
   const userCredential = await signInWithEmailAndPassword(auth, email, password);
   return userCredential.user;
 };

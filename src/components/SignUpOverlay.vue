@@ -4,17 +4,25 @@
         <button class="close-btn" @click="closeOverlay">X</button>
   
         <form @submit.prevent="signUp">
-          <label>Name:</label>
-          <input v-model="name" type="text" required />
+          <div class="labelContainer">
+            <label>Name:</label>
+            <input v-model="name" type="text" required />
+          </div>
   
-          <label>Email:</label>
-          <input v-model="email" type="email" required />
+          <div class="labelContainer">
+            <label>Email:</label>
+            <input v-model="email" type="email" required />
+          </div>
   
-          <label>Password:</label>
-          <input v-model="password" type="password" required />
+          <div class="labelContainer">
+            <label>Password:</label>
+            <input v-model="password" type="password" required />
+          </div>
   
-          <label>Confirm Password:</label>
-          <input v-model="confirmPassword" type="password" required />
+          <div class="labelContainer">
+            <label>Confirm Password:</label>
+            <input v-model="confirmPassword" type="password" required />
+          </div>
   
           <button type="submit">Sign Up</button>
         </form>
@@ -73,14 +81,37 @@
     justify-content: center;
     align-items: center;
   }
-  
   .formContainer {
-    background-color: white;
+    background-color: whitesmoke;
     padding: 20px;
     border-radius: 10px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    width: 400px;
+    justify-content: center;
+    color: #000;
   }
-  
+  .formContainer form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    gap: 20px;
+    padding-top: 30px;
+  }
+  .labelContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 350px;
+  }
+  .formContainer form button {
+    margin-top: 20px;
+  }
   .close-btn {
     position: absolute;
     top: 10px;
@@ -89,6 +120,7 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
+    color: #000;
   }
   </style>
   

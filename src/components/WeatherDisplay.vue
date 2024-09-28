@@ -6,14 +6,21 @@
           };
         },
 
-        props: ['weather', 'condition'],
+        props: ['weather', 'condition', 'isUserLoggedIn'],
 
         methods: {
           formatTime(unixTime) {
             const date = new Date(unixTime * 1000);
             return date.toLocaleTimeString();
+          },
+          handleUnitChange(unit) {
+            if (unit === 'pro' && !this.isUserLoggedIn) {
+            alert('Pro feature is only for registered users. Please log in to access.');
+          } else {
+            this.unit = unit;  // Allow change if logged in or switching to free
           }
-        }
+        },
+      }
     }
 </script>
 
@@ -22,10 +29,13 @@
       <label>
         <input type="radio" v-model="unit" value="free"> Free
       </label>
+      
       <label>
-        <input type="radio" v-model="unit" value="pro"> Pro
+        <input type="radio" v-model="unit" value="pro" @click="handleUnitChange('pro')"> Pro
       </label>
     </div>
+
+
     <div v-if="unit=='free'" class="simpleContainer">
       <h2>Free</h2>
       <div :class="['weather-info', condition]">

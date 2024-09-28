@@ -14,6 +14,7 @@ export default {
   },
   data() {
     return {
+      isUserLoggedIn: false,
       city: "",
       weather: null,
       errorMessage: null,
@@ -30,6 +31,9 @@ export default {
     }
   },
   methods: {
+    handleLoginStatus(isLoggedIn) {
+      this.isUserLoggedIn = isLoggedIn; 
+    },
     validateInput(){
       const cityName = this.city.trim();
       if(!this.city){
@@ -84,7 +88,7 @@ export default {
 
 <template>
   <div id="app" class="text-center">
-    <Mainmenu />
+    <Mainmenu @updateLoginStatus="handleLoginStatus" :isUserLoggedIn="isUserLoggedIn" />
 
     <CityInput v-model:cityInput="city" :isLoading="isLoading" @getWeather="getWeatherData" @clearData="clearData" />
 
@@ -94,7 +98,7 @@ export default {
 
     <div v-if="!weather" class="spacer"></div>
 
-    <WeatherDisplay v-if="weather" :weather="weather" :condition="weather.weather[0].main.toLowerCase() " />
+    <WeatherDisplay v-if="weather" :weather="weather" :isUserLoggedIn="isUserLoggedIn" :condition="weather.weather[0].main.toLowerCase() " />
     <div v-if="isLoading" class="spinner"></div>
     
     <Mainfooter />
