@@ -48,7 +48,7 @@ export default {
 
 <template>
     <div class="menuContainer">
-        <h3>Weather App with vue + vite</h3>
+        <h3>Weather App</h3>
 
         <div v-if="!isUserLoggedIn" class="btnContainer">
             <button @click="showLogin">Log in</button>
@@ -87,6 +87,9 @@ export default {
 @media only screen and (max-width: 600px) {
     .menuContainer {
         padding: 0px 10px;
+    }
+    .btnContainer {
+        width: auto;
     }
 }
 </style>

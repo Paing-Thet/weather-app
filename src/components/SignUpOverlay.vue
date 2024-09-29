@@ -43,18 +43,21 @@
       };
     },
     methods: {
-      async signUp() {
-        if (this.password !== this.confirmPassword) {
-          alert("Passwords do not match!");
-          return;
-        }
-        try {
-          await signUp(this.name, this.email, this.password);
-          alert("Sign-up successful!");
-          this.closeOverlay(); // Close the overlay after successful sign-up
-        } catch (error) {
-          alert(error.message);
-        }
+      // async signUp() {
+      //   if (this.password !== this.confirmPassword) {
+      //     alert("Passwords do not match!");
+      //     return;
+      //   }
+      //   try {
+      //     await signUp(this.name, this.email, this.password);
+      //     alert("Sign-up successful!");
+      //     this.closeOverlay();
+      //   } catch (error) {
+      //     alert(error.message);
+      //   }
+      // },
+      signUp() {
+        alert("You don't have a permission to register a new user for now. Please try again in another update.");
       },
       closeOverlay() {
         this.$emit('close');

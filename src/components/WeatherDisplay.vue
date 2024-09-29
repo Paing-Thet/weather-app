@@ -110,7 +110,20 @@
 .unitContainer {
   margin-top: 50px;
 }
-
+.unitContainer label {
+  display: inline-block;
+  box-shadow: 0px 4px 12px #00000060;
+  padding: 10px;
+  width: 100px;
+  margin: 0px 20px;
+  border-radius: 15px;
+  background-color: #1f2034;
+  transition: 0.3s ease;
+}
+.unitContainer label:hover {
+  box-shadow: 0px 0px 24px #e1f5fe;
+  transition: 0.3s ease;
+}
 .simpleContainer {
   margin-top: 50px;
   display: flex;
